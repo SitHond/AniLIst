@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Anilist | Главная";
+}
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+<div class="container bg-body-tertiary mb-3 rounded my-2">
+    <h4>Обновления на сайте</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var anime in Model)
+                {
+                    <tr>
+                        <td>@anime.Title</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>No anime data available.</p>
+            }
+
+        </tbody>
+    </table>
+</div>
