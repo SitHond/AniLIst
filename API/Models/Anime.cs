@@ -7,8 +7,19 @@ namespace site.Models
     [Table("anime")]
     public class Anime
     {
-        public int Id { get; set; }
-        public string Name { get; set; }      
-        public sbyte Score { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string Name { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string Russian { get; set; }
+        public double Score { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string Url { get; set; }
+
     }
 }

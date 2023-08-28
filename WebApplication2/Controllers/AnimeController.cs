@@ -1,22 +1,38 @@
 ﻿using API.Controllers;
+using API.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace site.Controllers
-
 {
+    [ApiController]
+    [Route("anime")]
     public class AnimeController : Controller
     {
-        private readonly AppDbContext _dbContext;
-
-        public AnimeController(AppDbContext dbContext)
+        private IAnimeRepository _animeRepository;
+        public AnimeController(IAnimeRepository repository)
         {
-            _dbContext = dbContext;
+            _animeRepository = repository; 
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route("")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> Animes(int PageNumber, int PageSize)
         {
-            var animeList = _dbContext.Anime.ToList();
-            return View(animeList);
+            return Json(await _animeRepository.GetAnimeAsync( PageNumber, PageSize));
+        }
+        [HttpGet("{Url}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetAnimeByUrlAsync(string Url)
+        {
+            var anime = await _animeRepository.GetAnimeByUrlAsync(Url);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return Json(anime);
         }
     }
 }
