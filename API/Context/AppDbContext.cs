@@ -16,6 +16,7 @@ namespace API.Controllers
     public class AppDbContext : DbContext
     {       
         public DbSet<Anime> animes { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +25,7 @@ namespace API.Controllers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=31.31.198.144;Database=u1317360_ShikiDB;User Id=u1317360_sithond;Password=wS8wJ6uT1cyI3tV8;");
+            optionsBuilder.UseMySQL("Server=31.31.198.144;Database=u1317360_ShikiDB;User Id=u1317360_sithond;Password=wS8wJ6uT1cyI3tV8;Charset=utf8mb4;");
         }
     }
 }

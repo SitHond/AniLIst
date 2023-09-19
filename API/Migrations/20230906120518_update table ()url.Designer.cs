@@ -3,6 +3,7 @@ using System;
 using API.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230906120518_update table ()url")]
+    partial class updatetableurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,12 +24,12 @@ namespace API.Migrations
 
             modelBuilder.Entity("site.Models.Anime", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("AiredOn")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<int>("Episodes")
                         .HasColumnType("int");
@@ -65,7 +68,7 @@ namespace API.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("ReleasedOn")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("Russian")
                         .IsRequired()

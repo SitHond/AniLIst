@@ -37,9 +37,10 @@ namespace API.Repositories
             return await _context.animes.Where(a => a.Url == Url).ToListAsync();
         }
 
-        public Task<bool> InsertAnimeAsync(string SearchParam)
+        public async Task<bool> InsertAnimeAsync(Anime newAnime)
         {
-            throw new NotImplementedException();
+            await _context.animes.AddAsync(newAnime);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public Task<bool> UpdateAnimeAsync(Guid uid)

@@ -7,6 +7,8 @@ namespace API.Migrations
     /// <inheritdoc />
     public partial class Anime : Migration
     {
+        public object Name;
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {

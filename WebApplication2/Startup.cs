@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using API.Controllers;
+﻿using API.Controllers;
 using API.interfaces;
 using API.Repositories;
+using Microsoft.OpenApi.Models;
+using Swashbuckle;
 
 namespace site
 {
@@ -29,6 +26,17 @@ namespace site
                            .AllowAnyMethod();
                 });
             });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API",
+                    Description = "API",
+                });
+                var filePath = Path.Combine(AppContext.BaseDirectory, "site.xml");
+                c.IncludeXmlComments(filePath);
+            });
 
             services.AddDbContext<AppDbContext>(); // Здесь подставьте ваш контекст базы данных
             services.AddScoped<IAnimeRepository, AnimeRepository>(); // Здесь подставьте ваши сервисы и репозитории
@@ -48,8 +56,14 @@ namespace site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                opt.RoutePrefix = string.Empty;
+            });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
