@@ -63,7 +63,7 @@ namespace site
                 opt.RoutePrefix = string.Empty;
             });
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

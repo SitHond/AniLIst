@@ -45,6 +45,7 @@ namespace site.Controllers
         [ProducesResponseType(400)] // Возвращайте 400 Bad Request при ошибке валидации
         public async Task<IActionResult> CreateAnime([FromBody] Anime anime)
         {
+
             if (anime == null)
             {
                 return BadRequest("Аниме не может быть пустым.");
@@ -57,7 +58,15 @@ namespace site.Controllers
 
             try
             {
-                // Создайте экземпляр аниме и добавьте его в контекст базы данных
+                // Проверяем наличие дубликата по имени
+                var existingAnime = await _animeRepository.GetAnimeByNameAsync(anime.Name);
+
+                if (existingAnime.Count > 0)
+                {
+                    return BadRequest("Аниме с таким именем уже существует.");
+                }
+
+                // Создаем экземпляр аниме и добавляем его в контекст базы данных
                 var newAnime = new Anime
                 {
                     Name = anime.Name,
@@ -73,13 +82,13 @@ namespace site.Controllers
                     Episodes = anime.Episodes,
                     EpisodesAired = anime.EpisodesAired,
                     AiredOn = anime.AiredOn,
-                    ReleasedOn = anime.ReleasedOn                    
+                    ReleasedOn = anime.ReleasedOn
                     // Другие свойства аниме
                 };
 
                 await _animeRepository.InsertAnimeAsync(newAnime);
                 await Console.Out.WriteLineAsync(newAnime.Id.ToString());
-                // Верните успешный результат с созданным аниме
+                // Возвращаем успешный результат с созданным аниме
                 return CreatedAtAction("GetAnimeById", new { id = newAnime.Id }, newAnime);
             }
             catch (Exception ex)

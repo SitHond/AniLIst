@@ -9,5 +9,6 @@ namespace API.interfaces
         Task<List<Anime>> GetAnimeByUrlAsync(string Url);
         Task<bool> UpdateAnimeAsync(Guid uid);
         Task<bool> DeleteAnimeAsync(Guid uid);
+        Task<List<Anime>> GetAnimeByNameAsync(string Name);
     }
 }

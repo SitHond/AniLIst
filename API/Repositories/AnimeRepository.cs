@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace API.Repositories
 {
@@ -32,6 +33,16 @@ namespace API.Repositories
             return await _context.animes.Skip(PageNumber * PageSize).Take(PageSize).ToListAsync();
 
         }
+
+        public async Task<List<Anime>> GetAnimeByNameAsync(string Name)
+        {
+            // Попробуйте найти аниме с заданным именем в базе данных
+            var anime = await _context.animes.Where(a => a.Name == Name).ToListAsync();
+
+            // Верните список аниме с указанным именем
+            return anime;
+        }
+
         public async Task<List<Anime>> GetAnimeByUrlAsync(string Url)
         {
             return await _context.animes.Where(a => a.Url == Url).ToListAsync();

@@ -25,7 +25,7 @@ namespace API.Controllers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=31.31.198.144;Database=u1317360_ShikiDB;User Id=u1317360_sithond;Password=wS8wJ6uT1cyI3tV8;Charset=utf8mb4;");
+            optionsBuilder.UseMySQL("Server=95.163.234.141;Database=ShikiDB;User Id=sithond_ru;Password=KOqCA5WhCBj013NM;Charset=utf8mb4;");
         }
     }
 }
