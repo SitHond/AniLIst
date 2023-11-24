@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,7 +17,8 @@ namespace API.Controllers
     public class AppDbContext : DbContext
     {       
         public DbSet<Anime> animes { get; set; }
-       
+        public DbSet<User> users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +27,7 @@ namespace API.Controllers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=95.163.234.141;Database=ShikiDB;User Id=sithond_ru;Password=KOqCA5WhCBj013NM;Charset=utf8mb4;");
+            optionsBuilder.UseMySQL("Server=95.163.234.141;Database=ShikiDB;User Id=sithond;Password=NotauzaKien7;Charset=utf8mb4;");
         }
     }
 }
