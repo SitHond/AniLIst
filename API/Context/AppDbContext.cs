@@ -18,6 +18,8 @@ namespace API.Controllers
     {       
         public DbSet<Anime> animes { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<AccessToken> AccessTokens { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

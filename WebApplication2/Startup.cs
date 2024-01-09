@@ -1,12 +1,7 @@
 ﻿using API.Controllers;
 using API.interfaces;
-using API.Models;
 using API.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 namespace site
 {
@@ -21,24 +16,39 @@ namespace site
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Добавление службы распределенного кэша в памяти
+            services.AddDistributedMemoryCache();
+
+            // Добавление службы сессий
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AniList.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(30); // Пример времени ожидания сессии
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        #if DEBUG
-                            builder.WithOrigins("http://localhost:8080")
-                        #else
+#if DEBUG
+                        builder.WithOrigins("http://localhost:8080")
+#else
                             builder.WithOrigins("http://sithond.ru")
-                        #endif
-                               .AllowAnyHeader()
-                               .AllowAnyMethod();
+#endif
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
                     });
             });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
-                {                   
+                {
                     Version = "v1",
                     Title = "API",
                     Description = "API Description",
@@ -51,13 +61,13 @@ namespace site
             services.AddHealthChecks();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAnimeRepository, AnimeRepository>();
-           
-
             services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
+
             app.UseCors("AllowSpecificOrigin");
 
             if (env.IsDevelopment())
@@ -69,6 +79,7 @@ namespace site
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseSwagger(opt =>
             {
                 opt.SerializeAsV2 = true;
@@ -76,11 +87,7 @@ namespace site
 
             app.UseSwaggerUI(opt =>
             {
-#if DEBUG
-                        opt.SwaggerEndpoint("swagger/v1/swagger.json", "API V1");
-#else
-                        opt.SwaggerEndpoint("/api/swagger/v1/swagger.json", "API V1");
-#endif
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
                 opt.RoutePrefix = string.Empty;
             });
 
@@ -91,6 +98,7 @@ namespace site
 
             app.UseAuthorization();
             app.UseHealthChecks("/health");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
