@@ -81,7 +81,7 @@ namespace site.Controllers
                         {
                             Subject = new ClaimsIdentity(new Claim[]
                             {
-        new Claim(ClaimTypes.Name, model.Username)
+                        new Claim(ClaimTypes.Name, model.Username)
                             }),
                             NotBefore = DateTime.UtcNow, // Устанавливаем время начала действия
                             Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:AccessTokenExpirationMinutes"])), // Устанавливаем срок действия
@@ -124,7 +124,19 @@ namespace site.Controllers
                         _context.RefreshTokens.Add(newRefreshToken);
                         await _context.SaveChangesAsync();
 
-                        return Ok(new { AccessToken = accessTokenString, RefreshToken = refreshTokenString });
+                        // Возвращаем не только токены, но и дополнительные данные о пользователе
+                        return Ok(new
+                        {
+                            AccessToken = accessTokenString,
+                            RefreshToken = refreshTokenString,
+                            User = new
+                            {
+                                Id = user.Id,
+                                Username = user.username,
+                                Email = user.email
+                                // Добавьте другие поля пользователя по необходимости
+                            }
+                        });
                     }
                     else
                     {
@@ -143,6 +155,7 @@ namespace site.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
         public static string HashPassword(string password)
         {
             if (string.IsNullOrEmpty(password))

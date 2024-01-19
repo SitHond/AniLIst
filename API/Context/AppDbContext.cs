@@ -25,6 +25,11 @@ namespace API.Controllers
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Anime>().ToTable(t => t.HasCheckConstraint(nameof(Anime.Score), $"{nameof(Anime.Score)} < 10"));
+            modelBuilder.Entity<User>().ToTable("user"); // Убедитесь, что указана правильная таблица
+            modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>().Property(u => u.username).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<User>().Property(u => u.password).IsRequired().HasMaxLength(255);
+            modelBuilder.Entity<User>().Property(u => u.email).IsRequired().HasMaxLength(255);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

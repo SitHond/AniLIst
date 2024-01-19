@@ -16,7 +16,6 @@ namespace site
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             // Добавление службы распределенного кэша в памяти
             services.AddDistributedMemoryCache();
 

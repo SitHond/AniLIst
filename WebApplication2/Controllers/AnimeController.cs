@@ -1,5 +1,6 @@
 ﻿using API.Controllers;
 using API.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using site.Models;
 
@@ -38,7 +39,6 @@ namespace site.Controllers
 
             return Json(anime);
         }
-
         [HttpPost]
         [Route("add-anime")]
         [ProducesResponseType(201)] // Возвращайте 201 Created при успешном создании
